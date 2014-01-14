@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="rabbit">
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/chosen.css' />
+  </head>
+  <body>
+    
+    <div ng-controller="NewsController">
+          <h1>Github Activity Stream</h1>
+
+          <div class="news">
+              <select chosen="projects" ng-options="e.text for e in projects" ng-model="watched" multiple></select>
+
+              <div class="alert push" ng-repeat='p in pushes'>
+                <div class="index"><p>{{$index}}</p></div>
+                <div class="body" compile="p.description"></div>
+              </div> 
+          </div>
+
+    </div>
+    
+    
+    
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script src="/javascripts/chosen.jquery.min.js"></script>
+    <script src="/javascripts/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular-sanitize.min.js"></script>
+    <script src="/javascripts/NewsController.js"></script>
+    
+  </body>
+</html>

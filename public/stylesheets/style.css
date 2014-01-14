@@ -1,0 +1,104 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+  text-decoration: none;
+}
+dt {
+  font-size: 16px;
+  font-weight: bold;
+}
+div {
+  display: block;
+}
+ul,
+ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+tt,
+code,
+pre {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  font-size: 12px;
+}
+blockquote {
+  margin: 0;
+}
+.news {
+  float: left;
+  width: 620px;
+}
+.news .alert {
+  padding: 0 0 1em 45px;
+  overflow: hidden;
+  position: relative;
+  border-top: 1px solid #f1f1f1;
+}
+.news .alert .gravatar {
+  background-color: #fff;
+  float: left;
+  line-height: 0;
+  margin-right: 0.6em;
+}
+.news .alert .body {
+  border-bottom: none;
+  overflow: hidden;
+  padding: 1em 0 0 0;
+  font-size: 14px;
+}
+.news .alert .time {
+  font-size: 12px;
+  color: #bbb;
+}
+.news .alert .index p {
+  float: left;
+  font-size: 2.2em;
+  font-weight: bold;
+  margin-right: 25px;
+  color: #bbb;
+}
+.news .alert .title {
+  padding: 0;
+  font-weight: bold;
+}
+.news .alert .commits {
+  padding-left: 40px;
+}
+.news .commits li {
+  margin-top: 0.15em;
+  list-style-type: none;
+}
+.news .commits li img {
+  vertical-align: middle;
+  background-color: #fff;
+  margin: 0 1px 0 0;
+  border-radius: 2px;
+}
+.news .commits li .message {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1.3;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+  white-space: nowrap;
+  max-width: 390px;
+}
+.news div.message,
+.news li blockquote {
+  color: #666;
+  display: inline;
+  font-size: 13px;
+  text-align: left;
+}
+.available-projects li {
+  display: inline;
+}
