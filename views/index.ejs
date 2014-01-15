@@ -5,6 +5,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/chosen.css' />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   </head>
   <body>
     
@@ -13,13 +14,21 @@
 
           <div class="news">
               <select chosen="projects" ng-options="e.text for e in projects" ng-model="watched" multiple></select>
-
-              <div class="alert push" ng-repeat='p in pushes'>
+              
+              <div class="wait" ng-show="!pushes">
+                <i class="fa fa-refresh fa-spin"></i>
+              </div>
+              
+              <div class="alert push" ng-repeat='p in pushes' >
                 <div class="index"><p>{{$index}}</p></div>
                 <div class="body" compile="p.description"></div>
+                <a href="{{p.link}}" class="gh" target="blank"><i class="fa fa-github"></i></a>
               </div> 
           </div>
 
+          <div>
+            <div></div>
+          </div>
     </div>
     
     

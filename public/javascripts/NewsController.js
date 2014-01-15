@@ -1,6 +1,6 @@
 var App = angular.module('rabbit', ['ngSanitize']);
 
-App.controller('NewsController', ['$scope', '$http', function NewsController($scope, $http) {
+App.controller('NewsController', ['$scope', '$http', '$timeout',  function NewsController($scope, $http, $timeout) {
 
     $scope.feed = [];
     $scope.projects = [
@@ -20,14 +20,7 @@ App.controller('NewsController', ['$scope', '$http', function NewsController($sc
     ];
     $scope.watched = $scope.projects;
     
-    
-    
-    $http.post('/fetchNews').success(function(retorno) {
-        $scope.feed = retorno.feed;
-        $scope.fetchNews();
-    });
-
-    $scope.fetchNews = function() {
+    $scope.filterNews = function() {
         if ($scope.feed.pushes) {
             $scope.pushes = $scope.feed.pushes.filter(function(e){
                 for(var i = 0; i < $scope.watched.length; i++){
@@ -39,14 +32,30 @@ App.controller('NewsController', ['$scope', '$http', function NewsController($sc
                 return false;
             });
         }
+        
     }
     
-    $scope.$watch("watched", $scope.fetchNews);
+    $scope.fetchNews = function(){
+        $scope.pushes = undefined;
+        
+        $http.post('/fetchNews').success(function(retorno) {
+            $scope.feed = retorno.feed;
+            $scope.filterNews();
+        });
+        $timeout($scope.fetchNews, 30000);
+    }
+    
+    function init(){
+        $scope.fetchNews();
+        
+        $scope.$watch("watched", $scope.filterNews);       
+    }
+    init();
+    
 }]);
 
 
 App.directive('time', function() {
-    
     return {
         restrict:'E',
         link: function (scope,element,attrs) {
