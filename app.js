@@ -1,12 +1,9 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express');
-var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+
+var index_rawt = require('./routes');
+var commits_rawt = require('./routes/commits');
 
 var app = express();
 
@@ -30,8 +27,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.post('/fetchNews', routes.fetchNews);
+app.get('/', index_rawt.index);
+app.post('/fetchNews', commits_rawt.fetchNews);
+app.get('/commits/list', commits_rawt.listCommits);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
