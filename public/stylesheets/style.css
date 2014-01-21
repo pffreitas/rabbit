@@ -35,81 +35,46 @@ blockquote {
   float: left;
   width: 620px;
 }
-.news .alert {
-  padding: 0 0 1em 45px;
+.news .commit {
   overflow: hidden;
-  position: relative;
-  border-top: 1px solid #f1f1f1;
+  margin: 10px 0;
+  padding: 8px 8px 0;
+  background: #e6f1f6;
+  border: 1px solid #c5d5dd;
+  border-radius: 4px;
 }
-.news .alert .gravatar {
+.news .commit .gravatar {
   background-color: #fff;
   float: left;
   line-height: 0;
   margin-right: 0.6em;
 }
-.news .alert .body {
-  border-bottom: none;
-  overflow: hidden;
-  padding: 1em 0 0 0;
-  font-size: 14px;
-}
-.news .alert .time {
+.news .commit .time {
   font-size: 12px;
   color: #bbb;
 }
-.news .alert .index p {
+.news .commit .index p {
   float: left;
   font-size: 2.2em;
   font-weight: bold;
   margin-right: 25px;
   color: #bbb;
 }
-.news .alert .title {
-  padding: 0;
+.news p.commit-title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
   font-weight: bold;
+  color: #213f4d;
+  text-shadow: 0 1px rgba(255,255,255,0.5);
 }
-.news .alert a.gh {
+.news .commit a.gh {
   font-size: 1.6em;
   float: right;
 }
-.news .alert a.gh:hover {
+.news .commit a.gh:hover {
   font-size: 1.6em;
   float: right;
   color: #000;
-}
-.news .alert .commits {
-  padding-left: 40px;
-}
-.news .commits li {
-  margin-top: 0.15em;
-  list-style-type: none;
-}
-.news .commits li img {
-  vertical-align: middle;
-  background-color: #fff;
-  margin: 0 1px 0 0;
-  border-radius: 2px;
-}
-.news .commits li .message {
-  display: inline-block;
-  font-size: 13px;
-  line-height: 1.3;
-  margin-top: 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  vertical-align: top;
-  white-space: nowrap;
-  max-width: 390px;
-}
-.news div.message,
-.news li blockquote {
-  color: #666;
-  display: inline;
-  font-size: 13px;
-  text-align: left;
-}
-.available-projects li {
-  display: inline;
 }
 div.wait {
   font-size: 2.6em;

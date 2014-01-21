@@ -28,7 +28,6 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', index_rawt.index);
-app.post('/fetchNews', commits_rawt.fetchNews);
 app.get('/commits/list', commits_rawt.listCommits);
 
 http.createServer(app).listen(app.get('port'), function(){

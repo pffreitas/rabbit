@@ -14,14 +14,18 @@
           <div class="news">
               <select chosen="projects" ng-options="e.text for e in projects" ng-model="watched" multiple></select>
               
-              <div class="wait" ng-show="!pushes">
+              <div class="wait" ng-show="!commits">
                 <i class="fa fa-refresh fa-spin"></i>
               </div>
               
-              <div class="alert push" ng-repeat='p in pushes' >
-                <div class="index"><p>{{$index}}</p></div>
-                <div class="body" compile="p.description"></div>
-                <a href="{{p.link}}" class="gh" target="blank"><i class="fa fa-github"></i></a>
+              <div class="commit" ng-repeat='c in commits'>
+                <div class="index"><p>{{$index}}</p></div>               
+                <p class="commit-title">{{c.commit.message}}</p>
+                <div class="commiter">
+                  <img class="gravatar" src="{{c.committer.avatar_url}}" width="24px" height="24px" />
+                  <span>{{c.commit.committer.name}}</span>
+                </div>
+                <a href="{{c.html_url}}" class="gh" target="blank"><i class="fa fa-github"></i></a>
               </div> 
           </div>
 

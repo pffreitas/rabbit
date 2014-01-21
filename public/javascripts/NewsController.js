@@ -35,18 +35,17 @@ App.controller('NewsController', ['$scope', '$http', '$timeout',  function NewsC
         
     }
     
-    $scope.fetchNews = function(){
+    $scope.fetchCommits = function(){
         $scope.pushes = undefined;
-        
-        $http.post('/fetchNews').success(function(retorno) {
-            $scope.feed = retorno.feed;
-            $scope.filterNews();
+        $http.get('/commits/list').success(function(retorno) {
+             $scope.commits = retorno;
+             console.log(retorno);
         });
-        $timeout($scope.fetchNews, 30000);
+        $timeout($scope.fetchCommits, 3000);
     }
     
     function init(){
-        $scope.fetchNews();
+        $scope.fetchCommits();
         
         $scope.$watch("watched", $scope.filterNews);       
     }
@@ -56,6 +55,7 @@ App.controller('NewsController', ['$scope', '$http', '$timeout',  function NewsC
 
 
 App.directive('time', function() {
+    
     return {
         restrict:'E',
         link: function (scope,element,attrs) {
