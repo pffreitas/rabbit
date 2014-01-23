@@ -1,11 +1,7 @@
 var App = angular.module('rabbit', ['ngSanitize']);
 
-App.controller('NewsController', ['$scope', '$http', '$timeout',  function NewsController($scope, $http, $timeout) {
-
-    $scope.feed = [];
-    $scope.projects = [
-        { text: "syn-framework"},
-        { text: "synchro-gov-social" },
+/*
+{ text: "synchro-gov-social" },
         { text: "doc-componentes"  },
         { text: "synchro-oauth-provider"  },
         { text: "synchro-workflow"  },
@@ -17,37 +13,28 @@ App.controller('NewsController', ['$scope', '$http', '$timeout',  function NewsC
         { text: "syn-mule-esb"  },
         { text: "appref-arquitetura"  },
         { text: "synchro-hd-grails"  }
-    ];
-    $scope.watched = $scope.projects;
-    
-    $scope.filterNews = function() {
-        if ($scope.feed.pushes) {
-            $scope.pushes = $scope.feed.pushes.filter(function(e){
-                for(var i = 0; i < $scope.watched.length; i++){
-                    var prj = $scope.watched[i];
-                    if(e.title.indexOf(prj.text) != -1){
-                        return true;
-                    }
+        */
+
+App.controller('NewsController', ['$scope', '$http', '$timeout',  function NewsController($scope, $http, $timeout) {
+
+    $scope.projects = {
+         "syn-framework": {}, "appref-arquitetura": {}    
+    };
+            
+    $scope.fetchCommits = function(){
+        for(p in $scope.projects){
+            $http.get(p + '/commits/list', {project: p}).success(
+                function(retorno, status, headers, config) {
+                    $scope.projects[config.project].commits = retorno;
                 }
-                return false;
-            });
+            );
         }
         
-    }
-    
-    $scope.fetchCommits = function(){
-        $scope.pushes = undefined;
-        $http.get('/commits/list').success(function(retorno) {
-             $scope.commits = retorno;
-             console.log(retorno);
-        });
-        $timeout($scope.fetchCommits, 3000);
+        //$timeout($scope.fetchCommits, 3000);
     }
     
     function init(){
-        $scope.fetchCommits();
-        
-        $scope.$watch("watched", $scope.filterNews);       
+        $scope.fetchCommits(); 
     }
     init();
     
