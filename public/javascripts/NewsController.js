@@ -1,30 +1,31 @@
 var App = angular.module('rabbit', ['ngSanitize']);
 
-/*
-{ text: "synchro-gov-social" },
-        { text: "doc-componentes"  },
-        { text: "synchro-oauth-provider"  },
-        { text: "synchro-workflow"  },
-        { text: "synchro-gui-grails"  },
-        { text: "synchro-foundation"  },
-        { text: "appref-model"  },
-        { text: "appref-view"  },
-        { text: "synchro-ctrlusu-grails"  },
-        { text: "syn-mule-esb"  },
-        { text: "appref-arquitetura"  },
-        { text: "synchro-hd-grails"  }
-        */
-
 App.controller('NewsController', ['$scope', '$http', '$timeout',  function NewsController($scope, $http, $timeout) {
 
+    //TODO think about project sort
     $scope.projects = {
-         "syn-framework": {}, "appref-arquitetura": {}    
+        "synchro-gov-social": {},
+        "doc-componentes": {},
+        "synchro-oauth-provider": {},
+        "synchro-workflow": {},
+        "synchro-gui-grails": {},
+        "synchro-foundation": {},
+        "appref-model": {},
+        "appref-view": {},
+        "synchro-ctrlusu-grails": {},
+        "synchro-integration": {},
+        "appref-arquitetura": {},
+        "synchro-hd-grails": {}
     };
-            
+        
+    $scope.selectedProject = !1;
+    
     $scope.fetchCommits = function(){
         for(p in $scope.projects){
+            $scope.projects[p].name = p;
             $http.get(p + '/commits/list', {project: p}).success(
                 function(retorno, status, headers, config) {
+                    if(!$scope.selectedProject) $scope.selectedProject = $scope.projects[config.project];
                     $scope.projects[config.project].commits = retorno;
                 }
             );

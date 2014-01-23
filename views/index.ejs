@@ -3,34 +3,74 @@
   <head>
     <title><%= title %></title>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300' rel='stylesheet' type='text/css'>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/stylesheets/chosen.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/chosen.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    
   </head>
   <body>
     
     <div ng-controller="NewsController">
         <p class="h1">Github Activity Stream</p>
-        
-        <div class="news">
-          <div ng-repeat="(name, p) in projects">
-              <p class="h2">{{name}} ({{p.commits.length}})</p>
-              
-              <div class="wait" ng-show="!p.commits">
-                <i class="fa fa-refresh fa-spin"></i>
-              </div>
-              
-              <div class="commit" ng-repeat='c in p.commits'>
-                <div class="index"><p>{{$index}}</p></div>               
-                <p class="commit-title">{{c.commit.message}}</p>
-                <div class="commiter">
+
+        <div class="news">         
+          <ul class="nav nav-pills ">
+            <li ng-class="{active: p == selectedProject}" ng-repeat="(name, p) in projects">           
+              <a id="link-{{name}}"  href ng-click="$parent.selectedProject = p">
+                  <span class="badge" ng-show="p.commits">{{p.commits.length}}</span>
+                  <i class="fa fa-refresh fa-spin" ng-show="!p.commits"></i>
+                  <span>{{name}}</span>
+              </a>
+            </li>
+          </ul>
+            
+          <div ng-show="selectedProject">
+            <div class="sel-prj-header">
+              <p class="h2">{{selectedProject.name}}</p>
+              <a href="#" class="sel-prj-menu" navbar-rigth>
+                <span class="glyphicon glyphicon-tasks"></span>
+              </a>
+            </div>
+          
+<nav class="navbar navbar-default" role="navigation">
+  <div class="navbar-header">
+    <a class="navbar-brand h3">{{selectedProject.name}}</a>
+  </div>
+
+  
+    
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>          
+          
+              <div class="panel panel-default commit" ng-repeat='c in selectedProject.commits' ng-show="selectedProject.commits">
+                <div class="panel-heading">{{c.commit.message}}</div>
+                <div class="panel-body">
+                  <div class="commiter">
                   <img class="gravatar" src="{{c.committer.avatar_url}}" width="24px" height="24px" />
                   <span>{{c.commit.committer.name}}</span>
                   <time title="{{c.commit.committer.date}}"></time>
                 </div>
                 <a href="{{c.html_url}}" class="gh" target="blank"><i class="fa fa-github"></i></a>
-              </div> 
+                </div>
+              </div>
           </div>
+
         </div>
 
           <div>
@@ -41,12 +81,16 @@
     
     
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
     <script src="/javascripts/chosen.jquery.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
     <script src="/javascripts/moment.min.js"></script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular-sanitize.min.js"></script>
+    
     <script src="/javascripts/NewsController.js"></script>
     
   </body>

@@ -30,37 +30,42 @@ blockquote
   margin: 0
 
 p
-    margin: 10px
+  margin: 10px
 
 p.h1
-    font-size: 3.3em
-    font-weight: 100
+  font-family: Roboto
+  font-size: 3.3em
+  font-weight: 100
 
 p.h2
-    font-size: 2.5em
-    font-weight: 100
+  font-family: Roboto
+  font-size: 2.5em
+  font-weight: 100
 
 p.h3
-    font-size: 2em
-    font-weight: 100
+  font-family: Roboto
+  font-size: 2em
+  font-weight: 100
     
 p.h4
-    font-size: 1.5em
-    font-weight: 100
+  font-family: Roboto
+  font-size: 1.5em
+  font-weight: 100
 
 .news 
   float: left
   width: 620px
 
-.news .commit
-  overflow: hidden
-  margin: 10px 0;
-  padding: 8px 8px 0;
-  background: #e6f1f6;
-  border: 1px solid #c5d5dd;
-  border-radius: 4px;
+.sel-prj-header
+  margin: 20px 0
+  border-bottom: 1px solid #ddd
+  
+.sel-prj-header p.h2
+  display: inline-block
+  
 
-.news .commit .gravatar 
+
+.commiter .gravatar 
   background-color: #fff
   float: left
   line-height: 0
@@ -69,34 +74,19 @@ p.h4
   vertical-align: middle
   border-radius: 3px
   
-.news .commit .time 
+.commit .time 
   font-size: 12px
   color: #bbb
 
-.news .commit .index p
-  float: left
-  font-size: 2.2em
-  font-weight: bold
-  margin-right: 25px
-  color: #bbb
-
-.news p.commit-title
-  margin: 0 0 8px 0
-  font-size: 18px
-  font-weight: bold
-  color: #213f4d
-  text-shadow: 0 1px rgba(255,255,255,0.5)
- 
-.news .commit a.gh
+.commit a.gh
   font-size: 1.6em
   float: right
   
-.news .commit a.gh:hover
+.commit a.gh:hover
   font-size: 1.6em
   float: right
   color: black
-  
-  
+
 div.wait
   font-size: 2.6em
   text-align: center
