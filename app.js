@@ -28,7 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', index_rawt.index);
-app.get('/commits/list', commits_rawt.listCommits);
+app.get('/:project/commits/list', commits_rawt.listCommits);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

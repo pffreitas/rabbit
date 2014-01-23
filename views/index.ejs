@@ -2,6 +2,7 @@
 <html ng-app="rabbit">
   <head>
     <title><%= title %></title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/chosen.css' />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -9,16 +10,17 @@
   <body>
     
     <div ng-controller="NewsController">
-          <h1>Github Activity Stream</h1>
-
-          <div class="news">
-              <select chosen="projects" ng-options="e.text for e in projects" ng-model="watched" multiple></select>
+        <p class="h1">Github Activity Stream</p>
+        
+        <div class="news">
+          <div ng-repeat="(name, p) in projects">
+              <p class="h2">{{name}} ({{p.commits.length}})</p>
               
-              <div class="wait" ng-show="!commits">
+              <div class="wait" ng-show="!p.commits">
                 <i class="fa fa-refresh fa-spin"></i>
               </div>
               
-              <div class="commit" ng-repeat='c in commits'>
+              <div class="commit" ng-repeat='c in p.commits'>
                 <div class="index"><p>{{$index}}</p></div>               
                 <p class="commit-title">{{c.commit.message}}</p>
                 <div class="commiter">
@@ -28,6 +30,7 @@
                 <a href="{{c.html_url}}" class="gh" target="blank"><i class="fa fa-github"></i></a>
               </div> 
           </div>
+        </div>
 
           <div>
             <div></div>

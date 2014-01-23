@@ -14,7 +14,7 @@ exports.listCommits = function(req, response){
   var data = [];
   
   ghOptions.host = 'api.github.com';
-  ghOptions.path = '/repos/Syncchro/synchro-integration/commits';
+  ghOptions.path = '/repos/Syncchro/'+req.params.project+'/commits';
   
   rest.getJSON(
                ghOptions,
