@@ -65,6 +65,13 @@ p.h4 {
 .sel-prj-header p.h2 {
   display: inline-block;
 }
+.sel-prj-menu {
+  float: right;
+  padding: 20px 10px 0 0;
+}
+.sel-prj-menu span.glyphicon-tasks {
+  font-size: 1.26em;
+}
 .commiter .gravatar {
   background-color: #fff;
   float: left;
