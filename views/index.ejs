@@ -61,8 +61,8 @@
                 </div>
 
 
-                <div class="list-group" ng-show="selectedProject.commits">
-                    <div ng-click="spotCommit(c);" ng-class="{active: c.sha == spottedCommit.sha}" class="list-group-item commit" ng-repeat='c in selectedProject.commits'>
+                <div class="list-group" ng-show="selectedProject.commits" ng-repeat='c in selectedProject.commits'>
+                    <div ng-click="spotCommit(c);" ng-class="{active: c.sha == spottedCommit.sha}" class="list-group-item commit">
                         <img class="gravatar" src="{{c.committer.avatar_url}}" width="48px" height="48px" />
                         <p class="list-group-item-heading h4 title">{{c.commit.message | truncate:45}}</p>
                         <p class="list-group-item-text commiter">
