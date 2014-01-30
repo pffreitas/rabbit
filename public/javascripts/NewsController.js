@@ -1,4 +1,4 @@
-var App = angular.module('rabbit', ['ngSanitize']);
+var App = angular.module('rabbit', ['ngSanitize', 'filters']);
 
 App.controller('NewsController', ['$scope', '$http', '$timeout',
     function NewsController($scope, $http, $timeout) {
@@ -33,8 +33,19 @@ App.controller('NewsController', ['$scope', '$http', '$timeout',
                     }
                 );
             }
+        }
 
-            //$timeout($scope.fetchCommits, 3000);
+        $scope.spotCommit = function (c) {
+            $http.post('commits/spot', c).success(function (retorno, status, headers, config) {
+                $scope.spottedCommit = retorno;
+            });
+        }
+
+        $scope.chop = function (str) {
+            if (str.length > 30) {
+                return str.substring(0, 30) + "...";
+            }
+            return str;
         }
 
         function init() {
@@ -104,3 +115,23 @@ App.directive('compile', ['$compile',
             );
         };
 }]);
+
+
+
+angular.module('filters', []).
+filter('truncate', function () {
+    return function (text, length, end) {
+        if (isNaN(length))
+            length = 10;
+
+        if (end === undefined)
+            end = "...";
+
+        if (text.length <= length || text.length - end.length <= length) {
+            return text;
+        } else {
+            return String(text).substring(0, length - end.length) + end;
+        }
+
+    };
+});
