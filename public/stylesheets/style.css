@@ -93,7 +93,33 @@ p.h4 {
   border-radius: 5px;
 }
 .commit {
+  width: 620px;
+  height: 115px;
   padding: 15px 15px;
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+}
+.fullscreen,
+.animate.ng-enter,
+.animate.ng-leave {
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.animate.ng-enter {
+  -webkit-animation: 0.5s fade-in;
+  -moz-animation: 0.5s fade-in;
+  -o-animation: 0.5s fade-in;
+  animation: 0.5s fade-in;
+  z-index: 100;
+}
+.animate.ng-leave {
+  -webkit-animation: 0.5s fade-out;
+  -moz-animation: 0.5s fade-out;
+  -o-animation: 0.5s fade-out;
+  animation: 0.5s fade-out;
+  z-index: 99;
 }
 .commit .title {
   font-weight: 300;
