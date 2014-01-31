@@ -96,30 +96,22 @@ p.h4 {
   width: 620px;
   height: 115px;
   padding: 15px 15px;
+}
+.fullscreen {
+  background-color: #f00;
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
   transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
 }
-.fullscreen,
-.animate.ng-enter,
-.animate.ng-leave {
-  background: #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+.fullscreen.ng-enter.ng-enter-active {
+  background: #00f;
 }
-.animate.ng-enter {
-  -webkit-animation: 0.5s fade-in;
-  -moz-animation: 0.5s fade-in;
-  -o-animation: 0.5s fade-in;
-  animation: 0.5s fade-in;
-  z-index: 100;
+.fullscreen {
+  background-color: #f00;
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
 }
-.animate.ng-leave {
-  -webkit-animation: 0.5s fade-out;
-  -moz-animation: 0.5s fade-out;
-  -o-animation: 0.5s fade-out;
-  animation: 0.5s fade-out;
-  z-index: 99;
+.fullscreen.ng-enter.ng-enter-active {
+  background: #00f;
 }
 .commit .title {
   font-weight: 300;
