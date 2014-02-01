@@ -34,6 +34,19 @@ App.controller('CommitsController', ['$scope', '$http', '$timeout',
         }
 
         $scope.spotCommit = function (c) {
+            var $commit = $('#' + c.sha);
+            var pos = $commit.offset().top - 15;
+
+            TweenLite.to($commit, .5, {
+                width: '100%',
+                height: '700px'
+            });
+
+            TweenLite.to(window, .5, {
+                scrollTo: pos,
+                ease: Power4.easeOut
+            });
+
             $http.post('commits/spot', c).success(function (retorno, status, headers, config) {
                 $scope.spottedCommit = retorno;
             });
