@@ -13,7 +13,40 @@ var ghOptions = {
     }
 };
 
+
+function doSomeJmx() {
+    var jmx = require("jmx");
+
+    var client = jmx.createClient({
+        service: "service:jmx:rmi:///jndi/rmi://localhost:1098/server",
+        username: 'jsmith',
+        password: 'foo'
+    });
+
+    client.connect();
+    client.on("connect", function () {
+        console.log(client.javaJmx);
+        client.listMBeans(function (data) {
+
+            /*
+                client.getAttribute(data[d], "", function (data) {
+                    console.log(data);
+                });
+                */
+
+        });
+
+
+
+
+
+    });
+
+}
+
 exports.listCommits = function (req, response) {
+    doSomeJmx();
+
     var data = [];
 
     ghOptions.host = 'api.github.com';

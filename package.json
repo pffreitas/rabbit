@@ -10,6 +10,9 @@
     "ejs": "*",
     "stylus": "*",
     "feedparser": "0.16.5",
-    "collections": "0.2.2"
+    "collections": "0.2.2",
+    "java": "0.3.0",
+    "jmx": "0.2.1"
+      
   }
 }
