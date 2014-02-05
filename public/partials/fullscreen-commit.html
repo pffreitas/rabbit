@@ -7,8 +7,8 @@
 
         <div class="commit fullscreen" ng-show="c">
             <div class="commit-header">
-                <img class="gravatar" src="{{c.committer.avatar_url}}" width="48px" height="48px" />
-                <p class="h4 title">{{c.commit.message}}</p>
+                <img class="gravatar" src="{{c.committer.avatar_url}}" width="60px" height="60px" />
+                <p class="h3 title">{{c.commit.message}}</p>
                 <p class="commiter">
                     <span class="name">{{c.commit.committer.name}}</span>
                     <time class="time" title="{{c.commit.committer.date}}">authored</time>
@@ -17,9 +17,8 @@
 
             <div class="commit-body">
                 <div ng-repeat="f in c.files">
-                    {{f.filename}}
-                    <div diff="f.patch" class="contents">
-                    </div>
+                    <div class="filename">_> {{f.filename}}</div>
+                    <div class="contents" diff="f.patch"></div>
                 </div>
             </div>
 
