@@ -27,12 +27,6 @@
                             <li>
                                 <a href="#">Action</a>
                             </li>
-                            <li>
-                                <a href="#">Another action</a>
-                            </li>
-                            <li>
-                                <a href="#">Something else here</a>
-                            </li>
                             <li class="divider"></li>
                             <li>
                                 <a href="#">Separated link</a>
@@ -44,7 +38,7 @@
         </div>
 
         <div class="list-group" ng-show="selectedProject.commits" ng-repeat='c in selectedProject.commits'>
-            <div id="{{c.sha}}" ng-click="spotCommit(c);" ng-class="{fullscreen: c.sha == spottedCommit.sha}" class="list-group-item commit">
+            <div id="{{c.sha}}" class="list-group-item commit">
                 <img class="gravatar" src="{{c.committer.avatar_url}}" width="48px" height="48px" />
                 <p class="list-group-item-heading h4 title">{{c.commit.message | truncate:45}}</p>
                 <p class="list-group-item-text commiter">
@@ -55,7 +49,7 @@
                     <a href="{{c.html_url}}" class="gh" target="blank">
                         <i class="fa fa-github"></i>
                     </a>
-                    <a href class="gh" ng-click="spotCommit(c);">
+                    <a href="#/spotCommit/{{selectedProject.name}}/{{c.sha}}" class="gh">
                         <i class="fa fa-code"></i>
                     </a>
                 </div>
