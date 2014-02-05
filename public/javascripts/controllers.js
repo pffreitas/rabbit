@@ -33,22 +33,24 @@ App.controller('CommitsController', ['$scope', '$http', '$timeout',
             }
         }
 
-        $scope.spotCommit = function (c) {
-            $http.post('commits/spot', c).success(function (retorno, status, headers, config) {
-                $scope.spottedCommit = retorno;
-            });
-        }
-
-        $scope.chop = function (str) {
-            if (str.length > 30) {
-                return str.substring(0, 30) + "...";
-            }
-            return str;
-        }
-
         function init() {
             $scope.fetchCommits();
         }
         init();
 
 }]);
+
+
+App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams',
+    function CommitsController($scope, $http, $routeParams) {
+        $scope.c = !1;
+
+        $scope.spotCommit = function (project, sha) {
+            $http.get(project + '/commits/' + sha).success(function (retorno, status, headers, config) {
+                $scope.c = retorno;
+            });
+        }
+
+        $scope.spotCommit($routeParams.project, $routeParams.sha);
+    }
+]);

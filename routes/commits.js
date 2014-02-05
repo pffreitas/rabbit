@@ -64,10 +64,9 @@ exports.listCommits = function (req, response) {
 
 exports.spotCommit = function (req, response) {
     var commit = req.body;
-    var commitUrl = url.parse(commit.url);
 
-    ghOptions.host = commitUrl.host;
-    ghOptions.path = commitUrl.path;
+    ghOptions.host = 'api.github.com';
+    ghOptions.path = '/repos/Syncchro/' + req.params.project + '/commits/' + req.params.sha;
 
     rest.getJSON(
         ghOptions,

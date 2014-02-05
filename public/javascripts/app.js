@@ -8,8 +8,9 @@ App.config(['$routeProvider',
             controller: 'CommitsController'
 
         }).
-        when('/spotCommit', {
-            templateUrl: 'partials/fullscreen-commit.html'
+        when('/spotCommit/:project/:sha', {
+            templateUrl: 'partials/fullscreen-commit.html',
+            controller: 'SpottedCommitController'
         }).
         otherwise({
             redirectTo: '/home'
@@ -17,7 +18,6 @@ App.config(['$routeProvider',
         }]);
 
 App.directive('time', function () {
-
     return {
         restrict: 'E',
         link: function (scope, element, attrs) {
@@ -26,26 +26,19 @@ App.directive('time', function () {
     }
 });
 
-App.directive('chosen', function () {
-    var linker = function (scope, element, attrs) {
-        var list = attrs.chosen;
-
-        scope.$watch(list, function () {
-            element.trigger("chosen:updated");
-        });
-
-        scope.$watch(attrs['ngModel'], function () {
-            element.trigger('chosen:updated');
-        });
-
-        element.chosen({
-            width: "100%;"
-        });
-    };
-
+App.directive('diff', function () {
     return {
-        restrict: 'A',
-        link: linker
+        link: function (scope, element, attrs) {
+            var editor = ace.edit(element[0]);
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/diff");
+            editor.setReadOnly(true);
+
+            scope.$watch(attrs.diff, function (newVal) {
+                editor.setValue(newVal);
+                editor.gotoLine(0);
+            })
+        }
     }
 });
 

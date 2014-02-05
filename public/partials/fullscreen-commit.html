@@ -1,17 +1,30 @@
-<div class="commit ">
-    <p class="h2">Bla</p>
-    <!-- img class="gravatar" src="{{c.committer.avatar_url}}" width="48px" height="48px" />
-    <p class="list-group-item-heading h4 title">{{c.commit.message | truncate:45}}</p>
-    <p class="list-group-item-text commiter">
-        <span class="name">{{c.commit.committer.name}}</span>
-        <time class="time" title="{{c.commit.committer.date}}">authored</time>
-    </p>
-    <div class="action-bar">
-        <a href="{{c.html_url}}" class="gh" target="blank">
-            <i class="fa fa-github"></i>
-        </a>
-        <a href="#/spotCommit" class="gh" ng-click="spotCommit(c);">
-            <i class="fa fa-code"></i>
-        </a>
-    </div -->
+<div ng-controller="SpottedCommitController" class="row">
+    <div class="col-md-12">
+
+        <div ng-show="!c">
+            loading
+        </div>
+
+        <div class="commit fullscreen" ng-show="c">
+            <div class="commit-header">
+                <img class="gravatar" src="{{c.committer.avatar_url}}" width="60px" height="60px" />
+                <p class="h3 title">{{c.commit.message}}</p>
+                <p class="commiter">
+                    <span class="name">{{c.commit.committer.name}}</span>
+                    <time class="time" title="{{c.commit.committer.date}}">authored</time>
+                </p>
+            </div>
+
+            <div class="commit-body">
+                <div ng-repeat="f in c.files">
+                    <div class="filename">_> {{f.filename}}</div>
+                    <div class="contents" diff="f.patch"></div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
 </div>

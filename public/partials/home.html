@@ -1,73 +1,60 @@
-<div ng-controller="CommitsController">
-    <p class="h1">Github Activity Stream</p>
+<div ng-controller="CommitsController" class="row">
+    <div class="col-md-12">
 
-    <div class="news">
-        <ul class="nav nav-pills">
-            <li ng-class="{active: p == selectedProject}" ng-repeat="(name, p) in projects">
-                <a id="link-{{name}}" href ng-click="$parent.selectedProject = p">
-                    <span class="badge" ng-show="p.commits">{{p.commits.length}}</span>
-                    <i class="fa fa-refresh fa-spin" ng-show="!p.commits"></i>
-                    <span>{{name}}</span>
-                </a>
-            </li>
-        </ul>
+        <div class="stream-header">
+            <p class="h1">Github Activity Stream</p>
 
-        <div ng-show="selectedProject">
-            <div class="sel-prj-header">
-                <p class="h2">{{selectedProject.name}}</p>
+            <ul class="nav nav-pills">
+                <li ng-class="{active: p == selectedProject}" ng-repeat="(name, p) in projects">
+                    <a id="link-{{name}}" href ng-click="$parent.selectedProject = p">
+                        <span class="badge" ng-show="p.commits">{{p.commits.length}}</span>
+                        <i class="fa fa-refresh fa-spin" ng-show="!p.commits"></i>
+                        <span>{{name}}</span>
+                    </a>
+                </li>
+            </ul>
 
-                <div class="btn-group sel-prj-menu">
-                    <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-tasks"></span>
-                        </span>
-                    </button>
-                    <ul class="dropdown-menu pull-right" role="menu">
-                        <li>
-                            <a href="#">Action</a>
-                        </li>
-                        <li>
-                            <a href="#">Another action</a>
-                        </li>
-                        <li>
-                            <a href="#">Something else here</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">Separated link</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <div ng-show="selectedProject">
+                <div class="sel-prj-header">
+                    <p class="h2">{{selectedProject.name}}</p>
 
-
-            <div class="list-group" ng-show="selectedProject.commits" ng-repeat='c in selectedProject.commits'>
-                <div ng-click="spotCommit(c);"  ng-class="{fullscreen: c.sha == spottedCommit.sha}" class="list-group-item commit">
-                    <img class="gravatar" src="{{c.committer.avatar_url}}" width="48px" height="48px" />
-                    <p class="list-group-item-heading h4 title">{{c.commit.message | truncate:45}}</p>
-                    <p class="list-group-item-text commiter">
-                        <span class="name">{{c.commit.committer.name}}</span>
-                        <time class="time" title="{{c.commit.committer.date}}">authored</time>
-                    </p>
-                    <div class="action-bar">
-                        <a href="{{c.html_url}}" class="gh" target="blank">
-                            <i class="fa fa-github"></i>
-                        </a>
-                        <a href="#/spotCommit" class="gh" ng-click="spotCommit(c);">
-                            <i class="fa fa-code"></i>
-                        </a>
+                    <div class="btn-group sel-prj-menu">
+                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li>
+                                <a href="#">Action</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">Separated link</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div>
+        <div class="list-group" ng-show="selectedProject.commits" ng-repeat='c in selectedProject.commits'>
+            <div id="{{c.sha}}" class="list-group-item commit">
+                <img class="gravatar" src="{{c.committer.avatar_url}}" width="48px" height="48px" />
+                <p class="list-group-item-heading h4 title">{{c.commit.message | truncate:45}}</p>
+                <p class="list-group-item-text commiter">
+                    <span class="name">{{c.commit.committer.name}}</span>
+                    <time class="time" title="{{c.commit.committer.date}}">authored</time>
+                </p>
+                <div class="action-bar">
+                    <a href="{{c.html_url}}" class="gh" target="blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                    <a href="#/spotCommit/{{selectedProject.name}}/{{c.sha}}" class="gh">
+                        <i class="fa fa-code"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-    <div ng-show="spottedCommit">
-        <div>
-            <h2>{{spottedCommit.commit.message}}</h2>
-        </div>
-        <div ng-repeat="f in spottedCommit.files">
-            {{f.filename}}
-        </div>
     </div>
 </div>
