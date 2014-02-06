@@ -1,5 +1,13 @@
-App.controller('CommitsController', ['$scope', '$http', '$timeout',
-    function CommitsController($scope, $http, $timeout) {
+App.factory('CommitData', function () {
+    return {
+        spottedCommit: !1
+    };
+});
+
+App.controller('CommitsController', ['$scope', '$http', 'CommitData',
+    function CommitsController($scope, $http, CommitData) {
+
+        $scope.commitData = CommitData;
 
         //TODO think about project sort
         $scope.projects = {
@@ -41,13 +49,15 @@ App.controller('CommitsController', ['$scope', '$http', '$timeout',
 }]);
 
 
-App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams',
-    function CommitsController($scope, $http, $routeParams) {
-        $scope.c = !1;
+App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams', 'CommitData',
+    function CommitsController($scope, $http, $routeParams, CommitData) {
+        $scope.commit = !1;
+        $scope.commitPartialInfo = CommitData.spottedCommit;
 
         $scope.spotCommit = function (project, sha) {
             $http.get(project + '/commits/' + sha).success(function (retorno, status, headers, config) {
-                $scope.c = retorno;
+                $scope.commit = retorno;
+                $scope.commitPartialInfo = $scope.commitPartialInfo || $scope.commit
             });
         }
 

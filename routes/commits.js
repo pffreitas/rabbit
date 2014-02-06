@@ -45,8 +45,6 @@ function doSomeJmx() {
 }
 
 exports.listCommits = function (req, response) {
-    doSomeJmx();
-
     var data = [];
 
     ghOptions.host = 'api.github.com';

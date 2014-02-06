@@ -1,23 +1,23 @@
 <div ng-controller="SpottedCommitController" class="row">
     <div class="col-md-12">
 
-        <div ng-show="!c">
+        <div ng-show="!commit && !commitPartialInfo">
             loading
         </div>
 
-        <div class="commit fullscreen" ng-show="c">
+        <div class="commit fullscreen" ng-show="commitPartialInfo">
             <div class="commit-header">
-                <img class="gravatar" src="{{c.committer.avatar_url}}" width="60px" height="60px" />
-                <p class="h3 title">{{c.commit.message}}</p>
+                <img class="gravatar" src="{{commitPartialInfo.committer.avatar_url}}" width="60px" height="60px" />
+                <p class="h3 title">{{commitPartialInfo.commit.message}}</p>
                 <p class="commiter">
-                    <span class="name">{{c.commit.committer.name}}</span>
-                    <time class="time" title="{{c.commit.committer.date}}">authored</time>
+                    <span class="name">{{commitPartialInfo.commit.committer.name}}</span>
+                    <time class="time" title="{{commitPartialInfo.commit.committer.date}}">authored</time>
                 </p>
             </div>
 
-            <div class="commit-body">
-                <div ng-repeat="f in c.files">
-                    <div class="filename">_> {{f.filename}}</div>
+            <div class="commit-body" ng-show="commit">
+                <div ng-repeat="f in commit.files">
+                    <div class="filename">>_ {{f.filename}}</div>
                     <div class="contents" diff="f.patch"></div>
                 </div>
             </div>
