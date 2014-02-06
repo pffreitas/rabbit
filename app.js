@@ -4,6 +4,7 @@ var path = require('path');
 
 var index_rawt = require('./routes');
 var commits_rawt = require('./routes/commits');
+var oauth_rawt = require('./routes/oauth');
 
 var app = express();
 
@@ -30,6 +31,9 @@ if ('development' == app.get('env')) {
 app.get('/', index_rawt.index);
 app.get('/:project/commits/list', commits_rawt.listCommits);
 app.get('/:project/commits/:sha', commits_rawt.spotCommit);
+
+app.get('/oauth', oauth_rawt.requestAuthCode);
+app.get('/oauth/receiveAuthToken', oauth_rawt.receiveAuthCode);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
