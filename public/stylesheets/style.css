@@ -141,6 +141,4 @@ div.wait {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   font-size: 1.1em;
 }
-.commit-body .contents {
-  height: 530px;
-}
+/*.commit-body .contents*/

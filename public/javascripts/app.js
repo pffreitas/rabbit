@@ -37,6 +37,7 @@ App.directive('diff', function () {
             scope.$watch(attrs.diff, function (newVal) {
                 editor.setValue(newVal);
                 editor.gotoLine(0);
+                element.css("height", (editor.getSession().getDocument().getLength() + 1) * 16);
             })
         }
     }
