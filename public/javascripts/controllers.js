@@ -1,58 +1,88 @@
-App.factory('CommitData', function () {
+App.factory('CommitModel', function () {
     return {
+        //TODO think about project sort
+        projects: [
+            {
+                name: "synchro-gov-social"
+            },
+            {
+                name: "doc-componentes"
+            },
+            {
+                name: "synchro-oauth-provider"
+            },
+            {
+                name: "synchro-workflow"
+            },
+            {
+                name: "synchro-gui-grails"
+            },
+            {
+                name: "synchro-foundation"
+            },
+            {
+                name: "appref-model"
+            },
+            {
+                name: "appref-view"
+            },
+            {
+                name: "synchro-ctrlusu-grails"
+            },
+            {
+                name: "synchro-integration"
+            },
+            {
+                name: "appref-arquitetura"
+            },
+            {
+                name: "synchro-hd-grails"
+            }
+        ],
+
+        selectedProject: !1,
+
         spottedCommit: !1
     };
 });
 
-App.controller('CommitsController', ['$scope', '$http', 'CommitData',
-    function CommitsController($scope, $http, CommitData) {
+App.controller('CommitsController', ['$scope', '$http', 'CommitModel',
+    function CommitsController($scope, $http, CommitModel) {
 
-        $scope.commitData = CommitData;
-
-        //TODO think about project sort
-        $scope.projects = {
-            "synchro-gov-social": {},
-            "doc-componentes": {},
-            "synchro-oauth-provider": {},
-            "synchro-workflow": {},
-            "synchro-gui-grails": {},
-            "synchro-foundation": {},
-            "appref-model": {},
-            "appref-view": {},
-            "synchro-ctrlusu-grails": {},
-            "synchro-integration": {},
-            "appref-arquitetura": {},
-            "synchro-hd-grails": {}
-        };
-
-        $scope.selectedProject = !1;
+        $scope.CommitModel = CommitModel;
+        $scope.projects = selectProjectToFetch();
 
         $scope.fetchCommits = function () {
             for (p in $scope.projects) {
-                $scope.projects[p].name = p;
-                $http.get(p + '/commits/list', {
-                    project: p
+                $scope.projects[p].lastFetch = !1;
+
+                $http.get($scope.projects[p].name + '/commits/list', {
+                    project: $scope.projects[p]
                 }).success(
                     function (retorno, status, headers, config) {
-                        if (!$scope.selectedProject) $scope.selectedProject = $scope.projects[config.project];
-                        $scope.projects[config.project].commits = retorno;
+                        var project = config.project;
+                        if (!CommitModel.selectedProject) CommitModel.selectedProject = project;
+                        project.commits = retorno;
+                        project.lastFetch = new Date();
                     }
                 );
             }
         }
 
-        function init() {
-            $scope.fetchCommits();
-        }
-        init();
+        $scope.fetchCommits();
 
+        function selectProjectToFetch() {
+            return _.filter(CommitModel.projects, function (i) {
+                return _.isUndefined(i.lastFetch) || i.lastFetch === false;
+            });
+        }
 }]);
 
 
-App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams', 'CommitData',
-    function CommitsController($scope, $http, $routeParams, CommitData) {
+App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams', 'CommitModel',
+    function CommitsController($scope, $http, $routeParams, CommitModel) {
         $scope.commit = !1;
-        $scope.commitPartialInfo = CommitData.spottedCommit;
+        $scope.commitPartialInfo = CommitModel.spottedCommit;
 
         $scope.spotCommit = function (project, sha) {
             $http.get(project + '/commits/' + sha).success(function (retorno, status, headers, config) {
