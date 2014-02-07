@@ -1,9 +1,7 @@
 <div ng-controller="SpottedCommitController" class="row">
     <div class="col-md-12">
 
-        <div ng-show="!commit && !commitPartialInfo">
-            loading
-        </div>
+        <div class="loading" ng-show="!commit && !commitPartialInfo"></div>
 
         <div class="commit fullscreen" ng-show="commitPartialInfo">
             <div class="commit-header">
@@ -14,6 +12,8 @@
                     <time class="time" title="{{commitPartialInfo.commit.committer.date}}">authored</time>
                 </p>
             </div>
+
+            <div class="loading" ng-show="!commit"></div>
 
             <div class="commit-body" ng-show="commit">
                 <div ng-repeat="f in commit.files">

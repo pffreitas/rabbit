@@ -141,4 +141,10 @@ div.wait {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   font-size: 1.1em;
 }
-/*.commit-body .contents*/
+.loading {
+  background: url("../images/sbsp_loading_1.gif");
+  height: 250px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
