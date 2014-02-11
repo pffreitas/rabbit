@@ -94,3 +94,23 @@ App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams', 'C
         $scope.spotCommit($routeParams.project, $routeParams.sha);
     }
 ]);
+
+
+
+App.controller('OAuthController', ['$scope', '$http', '$routeParams', '$location',
+    function OAuthController($scope, $http, $routeParams, $location) {
+        $scope.authorize = function () {
+            $http.get('/oauth/authCode', {
+                params: {
+                    l: $scope.oauthAddress,
+                    client_id: $scope.clientId,
+                    client_secret: $scope.clientSecret
+                }
+            }).success(function (retorno) {
+                window.location = retorno;
+            });
+        }
+
+        $scope.donut = $routeParams.donut;
+    }
+]);

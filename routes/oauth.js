@@ -5,52 +5,59 @@ var url = require('url');
 var consumerKey = 'ID-345232313231383938353736786d';
 var consumerSecret = 'S-39333632313231383938353736336934';
 
-var baseUrl = 'http://localhost:8180/synchro-oauth-provider/',
-    authUrl = '/synchro-oauth-provider/OAuth2/auth',
-    tokenUrl = "/synchro-oauth-provider/OAuth2/token";
+var authUrl = 'OAuth2/auth',
+    tokenUrl = "OAuth2/token";
+
 
 var payload = {
-    "client_id": consumerKey,
-    "client_secret": consumerSecret,
-    "redirect_uri": "http://localhost:3000/oauth/receiveAuthToken"
+    "redirect_uri": "http://ca180:3000/oauth/receiveAuthToken"
 }
+
 
 exports.requestAuthCode = function (req, response) {
 
+    req.session.oauthProviderLocation = url.parse(req.query.l);
+    var opl = req.session.oauthProviderLocation;
+
+    payload.client_id = req.query.client_id;
+    payload.client_secret = req.query.client_secret;
     payload.scope = "openid";
     payload.state = "-2";
     payload.nonce = "-1";
 
-
     var options = {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: 8180,
-        pathname: authUrl,
+        protocol: opl.protocol,
+        hostname: opl.hostname,
+        port: opl.port,
+        pathname: opl.pathname + authUrl,
         search: querystring.stringify(payload)
     };
 
     var requestAuthCodeUrl = url.format(options);
-    response.redirect(requestAuthCodeUrl);
+    response.send(requestAuthCodeUrl);
 }
 
 exports.receiveAuthCode = function (req, response) {
     var authCode = req.query.code
 
+    var opl = req.session.oauthProviderLocation;
+
     payload.grant_type = "authorization_code";
     payload.code = authCode;
 
     var options = {
-        hostname: 'localhost',
-        port: 8180,
-        path: tokenUrl + "?" + querystring.stringify(payload),
+        protocol: opl.protocol,
+        hostname: opl.hostname,
+        port: opl.port,
+        path: opl.pathname + tokenUrl + "?" + querystring.stringify(payload),
         method: "GET"
     };
 
     post(options, function (r, d) {
-        response.send(d);
+        var donut = JSON.parse(d);
+        response.redirect("/#/oauth/token/" + donut.access_token);
     }, function (e) {
-        console.log("error: ", e);
+        console.log("error: % o ", e);
         response.send(500, e);
     });
 }
