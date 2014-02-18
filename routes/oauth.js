@@ -1,4 +1,5 @@
 var http = require('http');
+var https = require('https');
 var querystring = require('querystring');
 var url = require('url');
 
@@ -52,10 +53,10 @@ exports.receiveAuthCode = function (req, response) {
         path: opl.pathname + tokenUrl + "?" + querystring.stringify(payload),
         method: "GET"
     };
-
+    console.log(options);
     post(options, function (r, d) {
         var donut = JSON.parse(d);
-        response.redirect("/#/oauth/token/" + donut.access_token);
+        response.send(d);
     }, function (e) {
         console.log("error: % o ", e);
         response.send(500, e);
@@ -63,7 +64,8 @@ exports.receiveAuthCode = function (req, response) {
 }
 
 function post(options, onResult, onError) {
-    var prot = options.port == 443 ? https : http;
+    var prot = options.protocol === 'https:' ? https : http;
+
     var req = prot.request(options, function (res) {
         var output = '';
         console.log(options.host + ':' + res.statusCode);

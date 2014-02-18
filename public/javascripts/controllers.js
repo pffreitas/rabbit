@@ -114,3 +114,37 @@ App.controller('OAuthController', ['$scope', '$http', '$routeParams', '$location
         $scope.donut = $routeParams.donut;
     }
 ]);
+
+
+
+
+App.controller('MonitoringController', ['$scope', '$http', '$routeParams', '$location',
+    function OAuthController($scope, $http, $routeParams, $location) {
+
+        var jolokiaBase = 'http://localhost:8899/jolokia';
+        var muleApps = [];
+
+        $scope.init = function () {
+            $http.get(jolokiaBase + '/search/*:name=MuleContext*').success(function (data) {
+                _.each(data.value, function (i) {
+                    $http.post(jolokiaBase + '/read/', {
+                        "type": "read",
+                        "mbean": i,
+                        "attribute": ["ServerId", "MaxMemory", "HostIp", "InstanceId", "TotalMemory", "FreeMemory", "OsVersion", "BuildDate", "JdkVersion", "StartTime", "Version", "Hostname"]
+                    }).success(function (d) {
+                        console.log(d);
+                        //muleApps.push(new MuleApp(i));
+                    });
+                });
+                console.log(muleApps);
+            });
+        }
+
+        $scope.init();
+
+
+        function MuleApp(name) {
+            this.name = name;
+        }
+    }
+]);

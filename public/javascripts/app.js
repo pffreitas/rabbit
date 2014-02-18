@@ -17,8 +17,10 @@ App.config(['$routeProvider',
         }).when('/oauth/token/:donut', {
             templateUrl: 'partials/oauth/token.html',
             controller: 'OAuthController'
-        }).
-        otherwise({
+        }).when('/monitoring', {
+            templateUrl: 'partials/monitoring/home.html',
+            controller: 'MonitoringController'
+        }).otherwise({
             redirectTo: '/home'
         });
         }]);
