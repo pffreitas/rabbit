@@ -17,7 +17,7 @@
 
             <div class="commit-body" ng-show="commit">
                 <div ng-repeat="f in commit.files">
-                    <div class="filename">>_ {{f.filename}}</div>
+                    <div class="filename">>_ {{f.filename}} ({{f.tags}})</div>
                     <div class="contents" diff="f.patch"></div>
                 </div>
             </div>
@@ -27,4 +27,5 @@
         </div>
 
     </div>
+
 </div>

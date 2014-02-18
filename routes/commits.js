@@ -3,6 +3,7 @@ var https = require('https');
 var url = require('url');
 
 var rest = require('../services/rest');
+var arch = require('../services/architecture');
 
 var ghOptions = {
     host: 'github.com',
@@ -33,15 +34,8 @@ function doSomeJmx() {
                     console.log(data);
                 });
                 */
-
         });
-
-
-
-
-
     });
-
 }
 
 exports.listCommits = function (req, response) {
@@ -60,6 +54,9 @@ exports.listCommits = function (req, response) {
         });
 }
 
+
+
+
 exports.spotCommit = function (req, response) {
     var commit = req.body;
 
@@ -69,9 +66,17 @@ exports.spotCommit = function (req, response) {
     rest.getJSON(
         ghOptions,
         function (status, data) {
-            response.json(data);
+            response.json(inspectCommitFiles(data));
         },
         function (err) {
             response.send(500);
         });
+}
+
+function inspectCommitFiles(json) {
+
+    var grailsArch = arch.getArchitecture('grails');
+    grailsArch.inspectFiles(json.files);
+
+    return json;
 }
