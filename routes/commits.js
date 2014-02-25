@@ -80,3 +80,25 @@ function inspectCommitFiles(json) {
 
     return json;
 }
+
+
+exports.markAsReaded = function (req, response) {
+    ghOptions.host = 'api.github.com';
+    ghOptions.path = '/repos/Syncchro/' + req.params.project + '/commits/' + req.params.sha + '/comments';
+
+    var data = {
+        body: "Marked as reviewed in " + new Date()
+    }
+    data = JSON.stringify(data);
+    console.log(data);
+
+    function success(status, data) {
+        response.json(inspectCommitFiles(data));
+    }
+
+    function error(err) {
+        response.send(500);
+    }
+
+    rest.getJSON(ghOptions, success, error, data);
+}
