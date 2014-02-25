@@ -44,6 +44,8 @@ App.directive('diff', function () {
 });
 
 
+
+
 App.directive('compile', ['$compile',
     function ($compile) {
         return function (scope, element, attrs) {

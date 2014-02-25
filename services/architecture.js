@@ -13,6 +13,15 @@ exports.getArchitecture = function (type) {
 function GrailsArchitecture() {
     this.filetypes = [
         new GlobFileVisitor("*/grails-app/views/**/*.gsp", ["view"]),
+        new GlobFileVisitor("*/web-app/js/**/*.js", ["view", "js"]),
+
+        new GlobFileVisitor("*/grails-app/controllers/**/*Controller.groovy", ["controller"]),
+
+        new GlobFileVisitor("*/src/**/*Service*.*", ["service"]),
+        new GlobFileVisitor("*/src/**/*Repository*.*", ["repository"]),
+
+        new GlobFileVisitor("*/grails-app/i18n/**/*.properties", ["conf", "i18n"]),
+
         new GlobFileVisitor("*/test/**/*.groovy", ["test"]),
         new GlobFileVisitor("*/test/**/*Page.groovy", ["test", "page"]),
         new GlobFileVisitor("*/test/functional/**/*FunctionalSpec.groovy", ["test", "functional"]),

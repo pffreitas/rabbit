@@ -83,6 +83,7 @@ App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams', 'C
     function CommitsController($scope, $http, $routeParams, CommitModel) {
         $scope.commit = !1;
         $scope.commitPartialInfo = CommitModel.spottedCommit;
+        $scope.currentView = 'overview';
 
         $scope.spotCommit = function (project, sha) {
             $http.get(project + '/commits/' + sha).success(function (retorno, status, headers, config) {

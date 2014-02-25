@@ -13,12 +13,35 @@
                 </p>
             </div>
 
+
             <div class="loading" ng-show="!commit"></div>
 
             <div class="commit-body" ng-show="commit">
-                <div ng-repeat="f in commit.files">
-                    <div class="filename">>_ {{f.filename}} ({{f.tags}})</div>
-                    <div class="contents" diff="f.patch"></div>
+
+                <div class="action-bar">
+                    <ul class="nav nav-pills">
+                        <li ng-class="{active: currentView == 'overview'}">
+                            <a href ng-click="currentView = 'overview'">Overview</a>
+                        </li>
+                        <li ng-class="{active: currentView == 'files'}">
+                            <a href ng-click="currentView = 'files'">Files</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>&nbsp;</div>
+
+                <!-- OVERVIEW -->
+                <div ng-show="currentView == 'overview'" overview="commit">
+
+                </div>
+
+                <!-- FILES -->
+                <div ng-show="currentView == 'files'">
+                    <div ng-repeat="f in commit.files">
+                        <div class="filename">>_ {{f.filename}} ({{f.tags}})</div>
+                        <!-- div class="contents" diff="f.patch"></div -->
+                    </div>
                 </div>
             </div>
 
