@@ -46,12 +46,9 @@
                     <time class="time" title="{{c.commit.committer.date}}">authored</time>
                 </p>
                 <div class="action-bar">
-                    <a href="{{c.html_url}}" class="gh" target="blank">
-                        <i class="fa fa-github"></i>
-                    </a>
-                    <a href="#/spotCommit/{{CommitModel.selectedProject.name}}/{{c.sha}}" ng-click="CommitModel.spottedCommit = c" class="gh">
-                        <i class="fa fa-code"></i>
-                    </a>
+                    <a class="gh" href ng-click="markAsReaded(CommitModel.selectedProject.name, c.sha);"><i class="fa fa-check-square-o" /></a>
+                    <a href="{{c.html_url}}" class="gh" target="blank"><i class="fa fa-github" /></a>
+                    <a href="#/spotCommit/{{CommitModel.selectedProject.name}}/{{c.sha}}" ng-click="CommitModel.spottedCommit = c" class="gh"><i class="fa fa-code"></i></a>
                 </div>
             </div>
         </div>

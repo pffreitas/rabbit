@@ -33,6 +33,8 @@ if ('development' == app.get('env')) {
 app.get('/', index_rawt.index);
 app.get('/:project/commits/list', commits_rawt.listCommits);
 app.get('/:project/commits/:sha', commits_rawt.spotCommit);
+//app.post('/:project/commits/:sha/comments', commits_rawt.markAsReaded);
+app.get('/:project/commits/:sha/comments/markAsReaded', commits_rawt.markAsReaded);
 
 app.get('/oauth/authCode', oauth_rawt.requestAuthCode);
 app.get('/oauth/receiveAuthToken', oauth_rawt.receiveAuthCode);
