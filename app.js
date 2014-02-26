@@ -19,7 +19,6 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('XPTO'));
 app.use(express.session({
-    key: 'app.sess',
     secret: 'XPTO'
 }));
 app.use(app.router);

@@ -99,6 +99,11 @@ App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams', 'C
 
 App.controller('OAuthController', ['$scope', '$http', '$routeParams', '$location',
     function OAuthController($scope, $http, $routeParams, $location) {
+
+        $scope.oauthAddress = "http://localhost:8080/synchro-oauth-provider/"
+        $scope.clientId = "ID-345232313231383938353736786d";
+        $scope.clientSecret = "S-39333632313231383938353736336934";
+
         $scope.authorize = function () {
             $http.get('/oauth/authCode', {
                 params: {
