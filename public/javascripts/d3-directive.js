@@ -1,21 +1,49 @@
-function collectFiles(files, tag) {
-    return _.filter(files, function (i) {
-        return _.contains(i.tags, tag);
+function buildFileTree(files) {
+    var root = {
+        name: "root",
+        children: []
+    };
+    var pointer = root;
+
+    _.each(files, function (i) {
+        var dirs = i.filename.split('/');
+        _.each(dirs, function (d) {
+            var exists = _.find(pointer.children, function (e) {
+                return e.name === d;
+            });
+            if (exists) {
+                pointer = exists;
+            } else {
+                var n = {
+                    name: d,
+                    children: []
+                };
+                pointer.children.push(n);
+                pointer = n;
+            }
+        });
+        pointer.changes = i.changes;
+        pointer = root;
     });
+
+    return root;
 }
 
 function createSvg(container) {
-    return d3.select(container).append("svg").attr("width", "100%").attr("height", 4000);
+    var w = 750,
+        h = 600;
+    d3.select(container).append("div").attr("id", "filepath").attr("width", w).attr("height", 30).attr("class", "filename");
+    return d3.select(container).append("svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + w / 2 + "," + h / 2 + ")");;
 }
 
-function rect(svg) {
-    svg.append("rect")
-        .style("fill", "#4AD5B4")
-        .style("fill-opacity", .4)
-        .attr("width", "95%")
-        .attr("height", 200)
-        .attr("rx", 5)
-        .attr("ry", 5);
+function getAncestors(node) {
+    var path = [];
+    var current = node;
+    while (current.parent) {
+        path.unshift(current);
+        current = current.parent;
+    }
+    return path;
 }
 
 App.directive('overview', function () {
@@ -23,41 +51,67 @@ App.directive('overview', function () {
         link: function (scope, element, attrs) {
             scope.$watch(attrs.overview, function (newVal) {
                 if (!newVal) return;
-
                 var commit = newVal;
 
-                var viewFiles = collectFiles(commit.files, "view");
-                var controllerFiles = collectFiles(commit.files, "controller");
-                var serviceFiles = collectFiles(commit.files, "service");
-                var repositoryFiles = collectFiles(commit.files, "repository");
-                var confFiles = collectFiles(commit.files, "conf");
-                var testFiles = collectFiles(commit.files, "test");
+                var root = buildFileTree(commit.files);
 
-                var stacks = [viewFiles];
+                var width = 750;
+                var height = 600;
+                var radius = Math.min(width, height) / 2;
+                var colors = d3.scale.category20b();
+                colors.domain(1, 1000);
+                var arc = d3.svg.arc()
+                    .startAngle(function (d) {
+                        return d.x;
+                    })
+                    .endAngle(function (d) {
+                        return d.x + d.dx;
+                    })
+                    .innerRadius(function (d) {
+                        return Math.sqrt(d.y);
+                    })
+                    .outerRadius(function (d) {
+                        return Math.sqrt(d.y + d.dy);
+                    });
 
                 var svg = createSvg(element[0]);
 
-                var g = svg.selectAll("g").data(stacks).enter().append("g")
-                g.append("rect")
-                    .style("fill", "#4AD5B4")
-                    .style("fill-opacity", .4)
-                    .attr("width", "100%")
-                    .attr("height", 200)
-                    .attr("rx", 5)
-                    .attr("ry", 5).attr("y", function (d, i) {
-                        return i * 210;
+                var partition = d3.layout.partition()
+                    .size([2 * Math.PI, radius * radius])
+                    .value(function (d) {
+                        console.log(d);
+                        return d.changes;
                     });
 
-                g.selectAll("g").data(function (d) {
-                    return d;
-                }).enter().append("g")
-                    .attr("transform", function (d, i) {
-                        return "translate(" + (i * 80) + ", 40)";
+                var nodes = partition.nodes(root);
+                var path = svg.selectAll("path")
+                    .data(nodes)
+                    .enter().append("svg:path")
+                    .attr("display", function (d) {
+                        return d.depth ? null : "none";
                     })
-                    .append("circle")
-                    .style("stroke", "gray")
-                    .style("fill", "white")
-                    .attr("r", 25);
+                    .attr("d", arc)
+                    .attr("fill-rule", "evenodd")
+                    .style("stroke", "white")
+                    .style("fill", function (d) {
+                        return colors(d.name);
+                    })
+                    .style("opacity", 1)
+                    .on("mouseover", function (d) {
+                        var sequenceArray = getAncestors(d);
+
+                        d3.selectAll("path")
+                            .style("opacity", 0.3);
+
+                        svg.selectAll("path")
+                            .filter(function (node) {
+                                return (sequenceArray.indexOf(node) >= 0);
+                            })
+                            .style("opacity", 1);
+
+                        d3.select("#filepath").text(_.pluck(sequenceArray, "name").join('/'));
+                    });
+
 
             });
         }
