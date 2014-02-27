@@ -30,10 +30,10 @@ function buildFileTree(files) {
 }
 
 function createSvg(container) {
-    var w = 750,
-        h = 600;
+    var w = 450,
+        h = 450;
     d3.select(container).append("div").attr("id", "filepath").attr("width", w).attr("height", 30).attr("class", "filename");
-    return d3.select(container).append("svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(" + w / 2 + "," + h / 2 + ")");;
+    return d3.select(container).append("svg").attr("width", w).attr("height", h).append("svg:g").attr("id", "container").attr("transform", "translate(" + w / 2 + "," + h / 2 + ")");;
 }
 
 function getAncestors(node) {
@@ -55,8 +55,8 @@ App.directive('overview', function () {
 
                 var root = buildFileTree(commit.files);
 
-                var width = 750;
-                var height = 600;
+                var width = 450;
+                var height = 450;
                 var radius = Math.min(width, height) / 2;
                 var colors = d3.scale.category20b();
                 colors.domain(1, 1000);
@@ -79,9 +79,59 @@ App.directive('overview', function () {
                 var partition = d3.layout.partition()
                     .size([2 * Math.PI, radius * radius])
                     .value(function (d) {
-                        console.log(d);
                         return d.changes;
                     });
+
+
+                function mouseleave(d) {
+                    d3.selectAll("path").on("mouseover", null);
+
+                    d3.selectAll("path")
+                        .transition()
+                        .duration(500)
+                        .style("opacity", 1)
+                        .each("end", function () {
+                            d3.select(this).on("mouseover", mouseover);
+                        });
+                }
+
+                function mouseover(d) {
+                    var sequenceArray = getAncestors(d);
+
+                    d3.selectAll("path")
+                        .style("opacity", 0.3);
+
+                    svg.selectAll("path")
+                        .filter(function (node) {
+                            return (sequenceArray.indexOf(node) >= 0);
+                        })
+                        .style("opacity", 1);
+
+                    d3.select("#filepath").text(_.pluck(sequenceArray, "name").join('/'));
+                }
+
+                function arcTween(a) {
+                    var i = d3.interpolate({
+                        x: 0,
+                        dx: 0
+                    }, a);
+                    return function (t) {
+                        var b = i(t);
+
+                        return arc(b);
+                    };
+
+                }
+
+                function stash(d) {
+                    d.x0 = d.x;
+                    d.dx0 = d.dx;
+                }
+
+                svg.append("svg:circle")
+                    .attr("r", radius)
+                    .style("opacity", 0);
+
 
                 var nodes = partition.nodes(root);
                 var path = svg.selectAll("path")
@@ -90,28 +140,27 @@ App.directive('overview', function () {
                     .attr("display", function (d) {
                         return d.depth ? null : "none";
                     })
-                    .attr("d", arc)
-                    .attr("fill-rule", "evenodd")
                     .style("stroke", "white")
                     .style("fill", function (d) {
                         return colors(d.name);
                     })
+                    .style("fill-rule", "evenodd")
                     .style("opacity", 1)
-                    .on("mouseover", function (d) {
-                        var sequenceArray = getAncestors(d);
+                    .on("mouseover", mouseover);
 
-                        d3.selectAll("path")
-                            .style("opacity", 0.3);
+                var duration = 500;
+                path
+                    .transition()
+                    .duration(duration)
+                    .delay(function (d, i) {
+                        return i / nodes.length * duration;
+                    })
+                    .attrTween("d", arcTween);
 
-                        svg.selectAll("path")
-                            .filter(function (node) {
-                                return (sequenceArray.indexOf(node) >= 0);
-                            })
-                            .style("opacity", 1);
 
-                        d3.select("#filepath").text(_.pluck(sequenceArray, "name").join('/'));
-                    });
 
+
+                d3.select("#container").on("mouseleave", mouseleave);
 
             });
         }
