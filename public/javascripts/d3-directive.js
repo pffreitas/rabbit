@@ -7,7 +7,7 @@ function buildFileTree(files) {
 
     _.each(files, function (i) {
         var dirs = i.filename.split('/');
-        _.each(dirs, function (d) {
+        _.each(dirs, function (d, idx) {
             var exists = _.find(pointer.children, function (e) {
                 return e.name === d;
             });
@@ -58,8 +58,9 @@ App.directive('overview', function () {
                 var width = 450;
                 var height = 450;
                 var radius = Math.min(width, height) / 2;
-                var colors = d3.scale.category20b();
-                colors.domain(1, 1000);
+
+                var colorScales = [colorbrewer.Greens, colorbrewer.Greys, colorbrewer.Oranges, colorbrewer.Blues, colorbrewer.Purples, colorbrewer.Reds, colorbrewer.YlGn, colorbrewer.BuGn, colorbrewer.BuPu];
+
                 var arc = d3.svg.arc()
                     .startAngle(function (d) {
                         return d.x;
@@ -99,7 +100,7 @@ App.directive('overview', function () {
                     var sequenceArray = getAncestors(d);
 
                     d3.selectAll("path")
-                        .style("opacity", 0.3);
+                        .style("opacity", 0.2);
 
                     svg.selectAll("path")
                         .filter(function (node) {
@@ -117,15 +118,9 @@ App.directive('overview', function () {
                     }, a);
                     return function (t) {
                         var b = i(t);
-
                         return arc(b);
                     };
 
-                }
-
-                function stash(d) {
-                    d.x0 = d.x;
-                    d.dx0 = d.dx;
                 }
 
                 svg.append("svg:circle")
@@ -134,6 +129,15 @@ App.directive('overview', function () {
 
 
                 var nodes = partition.nodes(root);
+                _.chain(nodes).filter(function (d) {
+                    return d.children && d.children.length > 1;
+                }).map(function (d) {
+                    return d.children;
+                }).flatten().each(function (c, i) {
+                    c.color = d3.scale.linear().range(colorScales[i][5]).domain([0, 3, 5, 7, 10]);
+                });
+
+
                 var path = svg.selectAll("path")
                     .data(nodes)
                     .enter().append("svg:path")
@@ -142,7 +146,13 @@ App.directive('overview', function () {
                     })
                     .style("stroke", "white")
                     .style("fill", function (d) {
-                        return colors(d.name);
+                        var p = d;
+                        while (!_.has(p, "color")) {
+                            p = p.parent ? p.parent : {
+                                color: d3.scale.category20()
+                            };
+                        }
+                        return d.color ? d.color(d.depth) : p.color(d.depth);
                     })
                     .style("fill-rule", "evenodd")
                     .style("opacity", 1)
