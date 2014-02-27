@@ -11,8 +11,16 @@ App.config(['$routeProvider',
         when('/spotCommit/:project/:sha', {
             templateUrl: 'partials/fullscreen-commit.html',
             controller: 'SpottedCommitController'
-        }).
-        otherwise({
+        }).when('/oauth', {
+            templateUrl: 'partials/oauth/home.html',
+            controller: 'OAuthController'
+        }).when('/oauth/token/:donut', {
+            templateUrl: 'partials/oauth/token.html',
+            controller: 'OAuthController'
+        }).when('/monitoring', {
+            templateUrl: 'partials/monitoring/home.html',
+            controller: 'MonitoringController'
+        }).otherwise({
             redirectTo: '/home'
         });
         }]);

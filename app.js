@@ -17,8 +17,10 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session());
+app.use(express.cookieParser('XPTO'));
+app.use(express.session({
+    secret: 'XPTO'
+}));
 app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,7 +36,7 @@ app.get('/:project/commits/:sha', commits_rawt.spotCommit);
 //app.post('/:project/commits/:sha/comments', commits_rawt.markAsReaded);
 app.get('/:project/commits/:sha/comments/markAsReaded', commits_rawt.markAsReaded);
 
-app.get('/oauth', oauth_rawt.requestAuthCode);
+app.get('/oauth/authCode', oauth_rawt.requestAuthCode);
 app.get('/oauth/receiveAuthToken', oauth_rawt.receiveAuthCode);
 
 http.createServer(app).listen(app.get('port'), function () {

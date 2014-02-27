@@ -101,3 +101,62 @@ App.controller('SpottedCommitController', ['$scope', '$http', '$routeParams', 'C
         $scope.spotCommit($routeParams.project, $routeParams.sha);
     }
 ]);
+
+
+
+App.controller('OAuthController', ['$scope', '$http', '$routeParams', '$location',
+    function OAuthController($scope, $http, $routeParams, $location) {
+
+        $scope.oauthAddress = "http://localhost:8080/synchro-oauth-provider/"
+        $scope.clientId = "ID-345232313231383938353736786d";
+        $scope.clientSecret = "S-39333632313231383938353736336934";
+
+        $scope.authorize = function () {
+            $http.get('/oauth/authCode', {
+                params: {
+                    l: $scope.oauthAddress,
+                    client_id: $scope.clientId,
+                    client_secret: $scope.clientSecret
+                }
+            }).success(function (retorno) {
+                window.location = retorno;
+            });
+        }
+
+        $scope.donut = $routeParams.donut;
+    }
+]);
+
+
+
+
+App.controller('MonitoringController', ['$scope', '$http', '$routeParams', '$location',
+    function OAuthController($scope, $http, $routeParams, $location) {
+
+        var jolokiaBase = 'http://localhost:8899/jolokia';
+        var muleApps = [];
+
+        $scope.init = function () {
+            $http.get(jolokiaBase + '/search/*:name=MuleContext*').success(function (data) {
+                _.each(data.value, function (i) {
+                    $http.post(jolokiaBase + '/read/', {
+                        "type": "read",
+                        "mbean": i,
+                        "attribute": ["ServerId", "MaxMemory", "HostIp", "InstanceId", "TotalMemory", "FreeMemory", "OsVersion", "BuildDate", "JdkVersion", "StartTime", "Version", "Hostname"]
+                    }).success(function (d) {
+                        console.log(d);
+                        //muleApps.push(new MuleApp(i));
+                    });
+                });
+                console.log(muleApps);
+            });
+        }
+
+        $scope.init();
+
+
+        function MuleApp(name) {
+            this.name = name;
+        }
+    }
+]);
