@@ -144,7 +144,6 @@ App.directive('overview', function () {
                     .attr("display", function (d) {
                         return d.depth ? null : "none";
                     })
-                    .style("stroke", "white")
                     .style("fill", function (d) {
                         var p = d;
                         while (!_.has(p, "color")) {
@@ -155,17 +154,23 @@ App.directive('overview', function () {
                         return d.color ? d.color(d.depth) : p.color(d.depth);
                     })
                     .style("fill-rule", "evenodd")
+                    .style("stroke", "0")
                     .style("opacity", 1)
                     .on("mouseover", mouseover);
 
                 var duration = 500;
                 path
+                    .style("stroke-width", "0")
                     .transition()
                     .duration(duration)
                     .delay(function (d, i) {
                         return i / nodes.length * duration;
                     })
-                    .attrTween("d", arcTween);
+                    .attrTween("d", arcTween)
+                    .style("stroke-width", "1")
+                    .style("stroke", "white");
+
+                //path.transition().duration(100);
 
 
 
