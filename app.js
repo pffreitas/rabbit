@@ -5,10 +5,9 @@ var path = require('path');
 var index_rawt = require('./routes');
 var commits_rawt = require('./routes/commits');
 var oauth_rawt = require('./routes/oauth');
+var project_insight_rawt = require('./routes/ProjectInsightRouter.js');
 
 var app = express();
-
-// all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -25,7 +24,7 @@ app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// development only
+
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
@@ -33,8 +32,9 @@ if ('development' == app.get('env')) {
 app.get('/', index_rawt.index);
 app.get('/:project/commits/list', commits_rawt.listCommits);
 app.get('/:project/commits/:sha', commits_rawt.spotCommit);
-//app.post('/:project/commits/:sha/comments', commits_rawt.markAsReaded);
 app.get('/:project/commits/:sha/comments/markAsReaded', commits_rawt.markAsReaded);
+
+app.put('/:project/insight', project_insight_rawt.receiveProjectInsight);
 
 app.get('/oauth/authCode', oauth_rawt.requestAuthCode);
 app.get('/oauth/receiveAuthToken', oauth_rawt.receiveAuthCode);
