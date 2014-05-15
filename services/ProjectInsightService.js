@@ -1,5 +1,6 @@
 var fs = require('fs'),
-    mkdirp = require('mkdirp');
+    mkdirp = require('mkdirp'),
+    arch = require('./Architecture');
 
 function storeProjectInsight(projectName, payload) {
     fs.exists(getProjectWorkDir(projectName), function (exists) {
@@ -23,13 +24,38 @@ function getProjectWorkDir(projectName) {
     return './projects/' + projectName;
 }
 
-function getProjectInsights(projectName) {
-    var projectInsights = [];
+function getProjectInsight(projectName, insightName) {
 
-    return {
-        all: projectInsights
-    }
+    var projectWd = getProjectWorkDir(projectName);
+    var contents = fs.readFileSync(projectWd + '/' + insightName, {
+        encoding: 'UTF-8'
+    });
+
+    var data = JSON.parse(contents);
+
+    var grailsArch = arch.getArchitecture('grails'); //TODO hardcoded, until otherwise
+    grailsArch.inspectFiles(data);
+
+    data.forEach(function (i) {
+        console.log(i.file + " -> " + i.tags);
+    });
+
+    return data;
 }
 
-exports.getProjectInsights = getProjectInsights;
+function getInsightProjects() {
+    var model = [];
+    var projects = fs.readdirSync('./projects');
+    projects.forEach(function (i) {
+        var insights = fs.readdirSync('./projects/' + i);
+        model.push({
+            project: i,
+            files: insights
+        });
+    });
+    return model;
+}
+
+exports.getInsightProjects = getInsightProjects;
+exports.getProjectInsight = getProjectInsight;
 exports.storeProjectInsight = storeProjectInsight;

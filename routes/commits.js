@@ -3,7 +3,6 @@ var https = require('https');
 var url = require('url');
 
 var rest = require('../services/rest');
-var arch = require('../services/architecture');
 
 var ghOptions = {
     host: 'github.com',
@@ -38,21 +37,12 @@ exports.spotCommit = function (req, response) {
     rest.getJSON(
         ghOptions,
         function (status, data) {
-            response.json(inspectCommitFiles(data));
+            response.json(data);
         },
         function (err) {
             response.send(500);
         });
 }
-
-function inspectCommitFiles(json) {
-
-    var grailsArch = arch.getArchitecture('grails');
-    grailsArch.inspectFiles(json.files);
-
-    return json;
-}
-
 
 exports.markAsReaded = function (req, response) {
     ghOptions.host = 'api.github.com';

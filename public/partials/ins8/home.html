@@ -1,0 +1,9 @@
+<ul class="nav nav-pills">
+    <li ng-repeat="(project, p) in InsightModel.projects">
+        <a id="link-{{project}}" href ng-click="selectProject(p);">
+            <!-- span class="badge" ng-show="p.commits">{{p.commits.length}}</span -->
+            <i class="fa fa-refresh fa-spin" ng-show="!p.files"></i>
+            <span>{{p.project}}</span>
+        </a>
+    </li>
+</ul>

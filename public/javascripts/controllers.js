@@ -160,3 +160,35 @@ App.controller('MonitoringController', ['$scope', '$http', '$routeParams', '$loc
         }
     }
 ]);
+
+App.factory('InsightModel', function () {
+    return {
+        projects: !1,
+        selectedProject: !1,
+        insight: !1
+    }
+});
+
+App.controller('InsightController', ['$scope', '$http', '$routeParams', '$location', 'InsightModel',
+    function InsightController($scope, $http, $routeParams, $location, InsightModel) {
+
+        $scope.InsightModel = InsightModel;
+
+        $scope.getProjectList = function () {
+            $http.get('insight/projects').success(function (retorno, status, headers, config) {
+                InsightModel.projects = retorno;
+            });
+        }
+
+        $scope.selectProject = function (p) {
+            $http.get(p.project + '/insight/' + p.files[0]).success(function (retorno, status, headers, config) {
+                InsightModel.insight = retorno;
+            });
+        }
+
+        var init = (function () {
+            $scope.getProjectList();
+        })();
+    }
+
+]);

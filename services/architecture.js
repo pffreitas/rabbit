@@ -12,31 +12,31 @@ exports.getArchitecture = function (type) {
 
 function GrailsArchitecture() {
     this.filetypes = [
-        new GlobFileVisitor("*/grails-app/views/**/*.gsp", ["view"]),
-        new GlobFileVisitor("*/web-app/js/**/*.js", ["view", "js"]),
+        new GlobFileVisitor("**/grails-app/views/**/*.gsp", ["view"]),
+        new GlobFileVisitor("**/web-app/js/**/*.js", ["view", "js"]),
 
-        new GlobFileVisitor("*/grails-app/controllers/**/*Controller.groovy", ["controller"]),
+        new GlobFileVisitor("**/grails-app/controllers/**/*Controller.groovy", ["controller"]),
 
-        new GlobFileVisitor("*/src/**/*Service*.*", ["service"]),
-        new GlobFileVisitor("*/src/**/*Repository*.*", ["repository"]),
+        new GlobFileVisitor("**/src/**/*Service*.*", ["service"]),
+        new GlobFileVisitor("**/src/**/*Repository*.*", ["repository"]),
 
-        new GlobFileVisitor("*/grails-app/i18n/**/*.properties", ["conf", "i18n"]),
+        new GlobFileVisitor("**/grails-app/i18n/**/*.properties", ["conf", "i18n"]),
 
-        new GlobFileVisitor("*/test/**/*.groovy", ["test"]),
-        new GlobFileVisitor("*/test/**/*Page.groovy", ["test", "page"]),
-        new GlobFileVisitor("*/test/functional/**/*FunctionalSpec.groovy", ["test", "functional"]),
-        new GlobFileVisitor("*/test/integration/**/*IntegrationSpec.groovy", ["test", "integration"])
+        new GlobFileVisitor("**/test/**/*.groovy", ["test"]),
+        new GlobFileVisitor("**/test/**/*Page.groovy", ["test", "page"]),
+        new GlobFileVisitor("**/test/functional/**/*FunctionalSpec.groovy", ["test", "functional"]),
+        new GlobFileVisitor("**/test/integration/**/*IntegrationSpec.groovy", ["test", "integration"])
     ];
 }
 
-GrailsArchitecture.prototype.inspectFiles = function (files) {
+GrailsArchitecture.prototype.inspectFiles = function (classes) {
 
-    for (i in files) {
-        var file = files[i];
+    for (i in classes) {
+        var clazz = classes[i];
 
         for (x in this.filetypes) {
             var type = this.filetypes[x];
-            type.visit(file);
+            type.visit(clazz);
         }
     }
 }
@@ -44,9 +44,9 @@ GrailsArchitecture.prototype.inspectFiles = function (files) {
 
 function GlobFileVisitor(pattern, tags) {
     return {
-        visit: function (file) {
-            if (minimatch(file.filename, pattern)) {
-                file.tags = tags
+        visit: function (clazz) {
+            if (minimatch(clazz.file, pattern)) {
+                clazz.tags = tags
             }
         }
     }

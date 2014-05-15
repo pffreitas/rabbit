@@ -9,6 +9,8 @@ function receiveProjectInsight(req, res) {
         return null;
     }
 
+    payload = JSON.stringify(payload, null, " ");
+
     ProjectInsightService.storeProjectInsight(project, payload);
 
     res.json({
@@ -16,5 +18,16 @@ function receiveProjectInsight(req, res) {
     });
 }
 
+function getInsightProjects(req, res) {
+    var projects = ProjectInsightService.getInsightProjects();
+    res.json(projects);
+}
 
+function getProjectInsight(req, res) {
+    var insight = ProjectInsightService.getProjectInsight(req.params.project, req.params.insight);
+    res.json(insight);
+}
+
+exports.getProjectInsight = getProjectInsight;
+exports.getInsightProjects = getInsightProjects;
 exports.receiveProjectInsight = receiveProjectInsight;

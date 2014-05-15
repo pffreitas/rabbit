@@ -22,6 +22,9 @@ App.config(['$routeProvider',
             controller: 'MonitoringController'
         }).otherwise({
             redirectTo: '/home'
+        }).when('/insight', {
+            templateUrl: 'partials/ins8/home.html',
+            controller: 'InsightController'
         });
         }]);
 

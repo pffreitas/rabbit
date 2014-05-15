@@ -34,6 +34,8 @@ app.get('/:project/commits/list', commits_rawt.listCommits);
 app.get('/:project/commits/:sha', commits_rawt.spotCommit);
 app.get('/:project/commits/:sha/comments/markAsReaded', commits_rawt.markAsReaded);
 
+app.get('/insight/projects', project_insight_rawt.getInsightProjects);
+app.get('/:project/insight/:insight', project_insight_rawt.getProjectInsight);
 app.put('/:project/insight', project_insight_rawt.receiveProjectInsight);
 
 app.get('/oauth/authCode', oauth_rawt.requestAuthCode);
